@@ -6437,6 +6437,13 @@ screen_puts_len(text, len, row, col, attr)
 		else
 		    prev_c = u8c;
 # endif
+		if (col + mbyte_cells > screen_Columns)
+		{
+		    /* Only 1 cell left, but character requires 2 cells:
+		     * display a '>' in the last column to avoid wrapping. */
+		    c = '>';
+		    mbyte_cells = 1;
+		}
 	    }
 	}
 #endif
@@ -9214,7 +9221,7 @@ unshowmode(force)
     int	    force;
 {
     /*
-     * Don't delete it right now, when not redrawing or insided a mapping.
+     * Don't delete it right now, when not redrawing or inside a mapping.
      */
     if (!redrawing() || (!force && char_avail() && !KeyTyped))
 	redraw_cmdline = TRUE;		/* delete mode later */

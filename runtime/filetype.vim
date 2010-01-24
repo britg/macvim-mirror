@@ -1,7 +1,7 @@
 " Vim support file to detect file types
 "
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last Change:	2009 Dec 02
+" Last Change:	2009 Dec 24
 
 " Listen very carefully, I will say this only once
 if exists("did_load_filetypes")
@@ -710,9 +710,9 @@ au BufNewFile,BufRead *.mo,*.gdmo		setf gdmo
 au BufNewFile,BufRead *.ged,lltxxxxx.txt	setf gedcom
 
 " Git
-autocmd BufNewFile,BufRead *.git/COMMIT_EDITMSG    setf gitcommit
-autocmd BufNewFile,BufRead *.git/config,.gitconfig setf gitconfig
-autocmd BufNewFile,BufRead git-rebase-todo         setf gitrebase
+autocmd BufNewFile,BufRead *.git/COMMIT_EDITMSG setf gitcommit
+autocmd BufNewFile,BufRead *.git/config,.gitconfig,.gitmodules setf gitconfig
+autocmd BufNewFile,BufRead git-rebase-todo      setf gitrebase
 autocmd BufNewFile,BufRead .msg.[0-9]*
       \ if getline(1) =~ '^From.*# This line is ignored.$' |
       \   setf gitsendemail |
@@ -1593,7 +1593,7 @@ au BufNewFile,BufRead *.builder,*.rxml,*.rjs	setf ruby
 " Rantfile and Rakefile is like Ruby
 au BufNewFile,BufRead [rR]antfile,*.rant,[rR]akefile,*.rake	setf ruby
 
-" S-lang (or shader language!)
+" S-lang (or shader language, or SmallLisp)
 au BufNewFile,BufRead *.sl			setf slang
 
 " Samba config

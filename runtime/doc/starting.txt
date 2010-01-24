@@ -1,4 +1,4 @@
-*starting.txt*  For Vim version 7.2.  Last change: 2009 Nov 11
+*starting.txt*  For Vim version 7.2.  Last change: 2009 Dec 31
 
 
 		  VIM REFERENCE MANUAL    by Bram Moolenaar
@@ -971,7 +971,8 @@ part of the line in the tags file) is always done in secure mode.  This works
 just like executing a command from a vimrc/exrc in the current directory.
 
 							*slow-start*
-If Vim takes a long time to start up, there may be a few causes:
+If Vim takes a long time to start up, use the |--startuptime| argument to find
+out what happens.  There are a few common causes:
 - If the Unix version was compiled with the GUI and/or X11 (check the output
   of ":version" for "+GUI" and "+X11"), it may need to load shared libraries
   and connect to the X11 server.  Try compiling a version with GUI and X11

@@ -1,7 +1,7 @@
 " Vim indent file
 " Language:         Shell Script
 " Maintainer:       Nikolai Weibull <now@bitwi.se>
-" Latest Revision:  2009-11-12
+" Latest Revision:  2010-01-06
 
 if exists("b:did_indent")
   finish
@@ -58,7 +58,7 @@ function! GetShIndent()
       let ind += s:indent_value('default')
     endif
   elseif s:is_case_label(line, pnum)
-    if line !~ ';[;&]\s*\%(#.*\)\=$'
+    if !s:is_case_ended(line)
       let ind += s:indent_value('case-statements')
     endif
   elseif line =~ '^\s*\<\k\+\>\s*()\s*{' || line =~ '^\s*{'
@@ -78,7 +78,9 @@ function! GetShIndent()
   if line =~ '^\s*\%(then\|do\|else\|elif\|fi\|done\)\>' || line =~ '^\s*}'
     let ind -= s:indent_value('default')
   elseif line =~ '^\s*esac\>'
-    let ind -= s:indent_value('case-statements') + s:indent_value('case-labels')
+    let ind -= (s:is_case_label(pine, lnum) && s:is_case_ended(pine) ?
+             \ 0 : s:indent_value('case-statements')) +
+             \ s:indent_value('case-labels')
     if s:is_case_break(pine)
       let ind += s:indent_value('case-breaks')
     endif
@@ -108,13 +110,13 @@ function! s:find_continued_lnum(lnum)
 endfunction
 
 function! s:is_case_label(line, pnum)
-  if a:line !~ '^\s*(\=.*)\s*$'
+  if a:line !~ '^\s*(\=.*)'
     return 0
   endif
 
   if a:pnum > 0
     let pine = getline(a:pnum)
-    if !(s:is_case(pine) || s:is_case_break(pine))
+    if !(s:is_case(pine) || s:is_case_ended(pine))
       return 0
     endif
   endif
@@ -146,6 +148,10 @@ endfunction
 
 function! s:is_case_break(line)
   return a:line =~ '^\s*;[;&]'
+endfunction
+
+function! s:is_case_ended(line)
+  return s:is_case_break(a:line) || a:line =~ ';[;&]\s*\%(#.*\)\=$'
 endfunction
 
 let &cpo = s:cpo_save
