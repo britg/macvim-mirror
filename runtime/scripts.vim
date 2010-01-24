@@ -1,7 +1,7 @@
 " Vim support file to detect file types in scripts
 "
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2008 Sep 05
+" Last change:	2009 Dec 24
 
 " This file is called by an autocommand for every file that has just been
 " loaded into a buffer.  It checks if the type of file can be recognized by
@@ -318,7 +318,7 @@ else
     set ft=scheme
 
   " Git output
-  elseif s:line1 =~ '^\(commit\|tree\|object\) \x\{40\}$\|^tag \S\+$'
+  elseif s:line1 =~ '^\(commit\|tree\|object\) \x\{40\}\>\|^tag \S\+$'
     set ft=git
 
   " CVS diff

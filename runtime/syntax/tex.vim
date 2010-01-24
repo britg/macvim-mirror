@@ -1,8 +1,8 @@
 " Vim syntax file
 " Language:	TeX
 " Maintainer:	Dr. Charles E. Campbell, Jr. <NdrchipO@ScampbellPfamily.AbizM>
-" Last Change:	Feb 05, 2009
-" Version:	45
+" Last Change:	Dec 28, 2009
+" Version:	46
 " URL:		http://mysite.verizon.net/astronaut/vim/index.html#vimlinks_syntax
 "
 " Notes: {{{1
@@ -180,12 +180,12 @@ syn match texLigature		"\\\([ijolL]\|ae\|oe\|ss\|AA\|AE\|OE\)$"
 
 " \begin{}/\end{} section markers: {{{1
 syn match  texSectionMarker	"\\begin\>\|\\end\>" nextgroup=texSectionName
-syn region texSectionName	matchgroup=Delimiter start="{" end="}"  contained nextgroup=texSectionModifier
-syn region texSectionModifier	matchgroup=Delimiter start="\[" end="]" contained
+syn region texSectionName	matchgroup=Delimiter start="{" end="}"  contained	nextgroup=texSectionModifier	contains=texComment
+syn region texSectionModifier	matchgroup=Delimiter start="\[" end="]" contained	contains=texComment
 
 " \documentclass, \documentstyle, \usepackage: {{{1
 syn match  texDocType		"\\documentclass\>\|\\documentstyle\>\|\\usepackage\>"	nextgroup=texSectionName,texDocTypeArgs
-syn region texDocTypeArgs	matchgroup=Delimiter start="\[" end="]"			contained	nextgroup=texSectionName
+syn region texDocTypeArgs	matchgroup=Delimiter start="\[" end="]"			contained	nextgroup=texSectionName	contains=texComment
 
 " Preamble syntax-based folding support: {{{1
 if g:tex_fold_enabled && has("folding")
@@ -194,10 +194,10 @@ endif
 
 " TeX input: {{{1
 syn match texInput		"\\input\s\+[a-zA-Z/.0-9_^]\+"hs=s+7				contains=texStatement
-syn match texInputFile		"\\include\(graphics\|list\)\=\(\[.\{-}\]\)\=\s*{.\{-}}"	contains=texStatement,texInputCurlies
+syn match texInputFile		"\\include\(graphics\|list\)\=\(\[.\{-}\]\)\=\s*{.\{-}}"	contains=texStatement,texInputCurlies,texInputFileOpt
 syn match texInputFile		"\\\(epsfig\|input\|usepackage\)\s*\(\[.*\]\)\={.\{-}}"		contains=texStatement,texInputCurlies,texInputFileOpt
 syn match texInputCurlies	"[{}]"								contained
-syn region texInputFileOpt	matchgroup=Delimiter start="\[" end="\]"			contained
+syn region texInputFileOpt	matchgroup=Delimiter start="\[" end="\]"			contained	contains=texComment
 
 " Type Styles (LaTeX 2.09): {{{1
 syn match texTypeStyle		"\\rm\>"
