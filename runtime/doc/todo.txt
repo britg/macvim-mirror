@@ -1,4 +1,4 @@
-*todo.txt*      For Vim version 7.2.  Last change: 2009 Dec 16
+*todo.txt*      For Vim version 7.2.  Last change: 2010 Jan 14
 
 
 		  VIM REFERENCE MANUAL	  by Bram Moolenaar
@@ -30,30 +30,48 @@ be worked on, but only if you sponsor Vim development.  See |sponsor|.
 							*known-bugs*
 -------------------- Known bugs and current work -----------------------
 
-Spanish messages and menus. (Omar Campagne, 2009 Dec 4)
+Patch from Dominique Pelle, documentation fixes. (2010 Jan 9)
+Another patch for README files.
+
+Patch from Dominique Pelle for buffer reload when fixing spell mistake.
+(2010 Jan 14)
+
+Extention for MzScheme interface. (Sergey Khorev, 2009 Dec 21, update Dec 26)
+
+patch from Sergey Khorev for "*" command escaping. (2010 Jan 5)
+
+Patch: :compiler command doesn't function properly when invoked in a function
+(Yukihiro Nakadaira)
 
 iconv() doesn't fail on an illegal character, as documented. (Yongwei Wu, 2009
 Nov 15, example Nov 26)  Add argument to specify whether iconv() should fail
 or replace with a character and continue?
-
-Update for form syntax. (Michael M Tung, 2009 Dec 4)
-
-Suggestion for more verbose test output and exit status. (Petr Splichal)
-Lech: later version already does this.
-
-When there is a stray "w" in the .vimrc file, the edited file is overwritten
-with an empty file. (Stone Kang).
-Detect that the file was not read and either read it first or give an error
-message.
 
 Problem with window jumping to other screen when changing font. (patch by
 Michael Wookey, 2009 Oct 16)
 Better: if the window offset was negative before changing something, then
 don't change it.
 
+Patch to make CTRL-] work on scheme keywords. (Sergey Khorev, 2010 Jan 5)
+
+Gcc warning for condition that can never be true, fold.c line 3242. (James
+Vega, 2010 Jan 13)
+
+Omni menu position one column too far to the right, double-wide chars split to
+next line. (Jiang Ma, 2010 Jan 10)
+Explicit example from Dominique.
+Need to check that the last character fits?
+Patch from Dominique Pelle. (2010 Jan 12)  One more (2010 Jan 12)
+
+has("win64") returns zero.  Patch from Sergey Khorev, 2009 Jan 5.
+Or define WIN64 when _WIN64 is defined, change all _WIN64 to WIN64.
+
 Add local time at start of --startuptime output.
 Requires configure check for localtime().
 Use format year-month-day hr:min:sec.
+
+Patch to support netbeans in Unix console Vim. (Xaview de Gaye, 2009 Apr 26)
+Now with Mercurial repository (2010 Jan 2)
 
 Shell not recognized properly if it ends in "csh -f". (James Vega, 2009 Nov 3)
 Find tail?  Might have a / in argument.  Find space?  Might have space in
@@ -448,8 +466,6 @@ Backreference not cleared when retrying after \@<= fails?
 (Brett Stahlman, 2008 March 8)
 
 Problem with remote_send(). (Charles Campbell, 2008 Aug 12)
-
-Patch to support netbeans in Unix console Vim. (Xaview de Gaye, 2009 Apr 26)
 
 ftplugin for help file should set 'isk' to help file value.
 
@@ -1133,8 +1149,10 @@ restored. (Luc St-Louis)
 
 
 Vim 7.3:
--   Use latest autoconf (3.64)
+-   Use latest autoconf (2.65)
 -   Use NSIS 2.45, it includes Windows 7 support.
+-   Include all files in distro, no "extra" and "lang" package.
+-   Create Mercurial repository.
 -   Easier/standard way to disable default plugins.
 -   Add patch for 'relativenumber' option?  Markus Heidelberg, 2008 Jun 27.
 -   Add blowfish encryption.  Openssl has an implementation.  Also by Paul

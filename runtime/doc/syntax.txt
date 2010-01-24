@@ -1,4 +1,4 @@
-*syntax.txt*	For Vim version 7.2.  Last change: 2009 Nov 08
+*syntax.txt*	For Vim version 7.2.  Last change: 2009 Dec 19
 
 
 		  VIM REFERENCE MANUAL	  by Bram Moolenaar
@@ -2567,11 +2567,13 @@ If you notice highlighting errors while scrolling backwards, which are fixed
 when redrawing with CTRL-L, try setting the "tcsh_minlines" internal variable
 to a larger number: >
 
-	:let tcsh_minlines = 100
+	:let tcsh_minlines = 1000
 
-This will make the syntax synchronization start 100 lines before the first
-displayed line.  The default value is 15.  The disadvantage of using a larger
-number is that redrawing can become slow.
+This will make the syntax synchronization start 1000 lines before the first
+displayed line.  If you set "tcsh_minlines" to "fromstart", then
+synchronization is done from the start of the file. The default value for
+tcsh_minlines is 100.  The disadvantage of using a larger number is that
+redrawing can become slow.
 
 
 TEX						*tex.vim* *ft-tex-syntax*

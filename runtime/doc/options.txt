@@ -1,4 +1,4 @@
-*options.txt*	For Vim version 7.2.  Last change: 2009 Nov 09
+*options.txt*	For Vim version 7.2.  Last change: 2010 Jan 06
 
 
 		  VIM REFERENCE MANUAL	  by Bram Moolenaar
@@ -1760,8 +1760,8 @@ A jump table for the options with a short description can be found at |Q_op|.
 	set and to the Vim default value when 'compatible' is reset.
 	NOTE: This option is set to the POSIX default value at startup when
 	the Vi default value would be used and the $VIM_POSIX environment
-	variable exists |posix|.  This means tries to behave like the POSIX
-	specification.
+	variable exists |posix|.  This means Vim tries to behave like the
+	POSIX specification.
 
 	    contains	behavior	~
 								*cpo-a*
@@ -3250,7 +3250,7 @@ A jump table for the options with a short description can be found at |Q_op|.
 	the case of X).  The font names given should be "normal" fonts.  Vim
 	will try to find the related bold and italic fonts.
 
-	For Win32, GTK, Mac OS and Photon: >
+	For Win32, GTK, Motif, Mac OS and Photon: >
 	    :set guifont=*
 <	will bring up a font requester, where you can pick the font you want.
 
