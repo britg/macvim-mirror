@@ -191,6 +191,34 @@ enum {
 
 - (void)drawRect:(NSRect)rect
 {
+    if (isDirty) {
+        // Clear the entire view
+        CGContextRef ctx = [[NSGraphicsContext currentContext] graphicsPort];
+        NSRect rect = [self bounds];
+        NSColor *color = [textView defaultBackgroundColor];
+        CGContextSetBlendMode(ctx, kCGBlendModeCopy);
+        CGContextSetRGBFillColor(ctx,
+                                 [color redComponent],
+                                 [color greenComponent],
+                                 [color blueComponent],
+                                 [color alphaComponent]);
+        CGContextFillRect(ctx, *(CGRect*)&rect);
+        CGContextSetBlendMode(ctx, kCGBlendModeNormal);
+
+        isDirty = NO;
+    }
+
+    NSRect textViewFrame = [textView frame];
+    if (!NSEqualRects(lastTextViewFrame, textViewFrame)) {
+        // If the text view's frame changes we copy the contents of the old
+        // frame to the origin of the new frame.  The reason for this is that
+        // Vim expects the contents of its view not to change unless Vim
+        // changes it.  (Omitting this code causes the view contents to get
+        // messed up e.g. when the left scrollbar is shown.)
+        NSCopyBits(0, lastTextViewFrame, textViewFrame.origin);
+        lastTextViewFrame = textViewFrame;
+    }
+
     // On Leopard, we want to have a textured window background for nice
     // looking tabs. However, the textured window background looks really
     // weird behind the window resize throbber, so emulate the look of an
@@ -224,7 +252,7 @@ enum {
         // If the left scrollbar is visible there is an empty square under it.
         // Fill it in just like on the right hand corner.  The half pixel
         // offset ensures the outline goes on the top and right side of the
-        // square; the left and bottom parts are clipped.
+        // square; the left and bottom parts of the outline are clipped.
         sizerRect = NSMakeRect(-.5,-.5,sw,sw);
         path = [NSBezierPath bezierPathWithRect:sizerRect];
         [[NSColor controlBackgroundColor] set];
@@ -614,6 +642,13 @@ enum {
     // See comment in setFrameSize: above.
     [super setFrame:frame];
     [self frameSizeMayHaveChanged];
+}
+
+- (void)markDirty
+{
+    // When the view is marked as dirty, the entire background will be cleared
+    // the next time the view is redrawn.
+    isDirty = YES;
 }
 
 @end // MMVimView
