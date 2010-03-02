@@ -5944,6 +5944,10 @@ did_set_string_option(opt_idx, varp, new_value_alloced, oldval, errbuf,
 #endif
 	    /* update flag in swap file */
 	    ml_setflags(curbuf);
+	    /* Redraw needed when switching to/from "mac": a CR in the text
+	     * will be displayed differently. */
+	    if (get_fileformat(curbuf) == EOL_MAC || *oldval == 'm')
+		redraw_curbuf_later(NOT_VALID);
 	}
     }
 
@@ -6661,7 +6665,11 @@ did_set_string_option(opt_idx, varp, new_value_alloced, oldval, errbuf,
 		|| *curwin->w_p_fdm == NUL)
 	    errmsg = e_invarg;
 	else
+	{
 	    foldUpdateAll(curwin);
+	    if (foldmethodIsDiff(curwin))
+		newFoldLevel();
+	}
     }
 # ifdef FEAT_EVAL
     /* 'foldexpr' */
