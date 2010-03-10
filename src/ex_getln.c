@@ -4492,6 +4492,7 @@ ExpandFromContext(xp, pat, num_file, file, options)
 	} tab[] =
 	{
 	    {EXPAND_COMMANDS, get_command_name, FALSE},
+	    {EXPAND_BEHAVE, get_behave_arg, TRUE},
 #ifdef FEAT_USR_CMDS
 	    {EXPAND_USER_COMMANDS, get_user_commands, FALSE},
 	    {EXPAND_USER_CMD_FLAGS, get_user_cmd_flags, FALSE},
@@ -6251,7 +6252,11 @@ ex_window()
 	bp = curbuf;
 	win_goto(old_curwin);
 	win_close(wp, TRUE);
-	close_buffer(NULL, bp, DOBUF_WIPE);
+
+	/* win_close() may have already wiped the buffer when 'bh' is
+	 * set to 'wipe' */
+	if (buf_valid(bp))
+	    close_buffer(NULL, bp, DOBUF_WIPE);
 
 	/* Restore window sizes. */
 	win_size_restore(&winsizes);
