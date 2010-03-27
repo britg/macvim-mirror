@@ -477,6 +477,23 @@ typedef unsigned long u8char_T;	    /* long should be 32 bits or more */
 # include <stdarg.h>
 #endif
 
+# if defined(HAVE_SYS_SELECT_H) && \
+	(!defined(HAVE_SYS_TIME_H) || defined(SYS_SELECT_WITH_SYS_TIME))
+#  include <sys/select.h>
+# endif
+
+# ifndef HAVE_SELECT
+#  ifdef HAVE_SYS_POLL_H
+#   include <sys/poll.h>
+#   define HAVE_POLL
+#  else
+#   ifdef HAVE_POLL_H
+#    include <poll.h>
+#    define HAVE_POLL
+#   endif
+#  endif
+# endif
+
 /* ================ end of the header file puzzle =============== */
 
 /*
@@ -595,7 +612,7 @@ extern char *(*dyn_libintl_textdomain)(const char *domainname);
 
 /*
  * Terminal highlighting attribute bits.
- * Attibutes above HL_ALL are used for syntax highlighting.
+ * Attributes above HL_ALL are used for syntax highlighting.
  */
 #define HL_NORMAL		0x00
 #define HL_INVERSE		0x01
@@ -721,6 +738,7 @@ extern char *(*dyn_libintl_textdomain)(const char *domainname);
 #define EXPAND_CSCOPE		33
 #define EXPAND_SIGN		34
 #define EXPAND_PROFILE		35
+#define EXPAND_BEHAVE		36
 
 /* Values for exmode_active (0 is no exmode) */
 #define EXMODE_NORMAL		1
@@ -1262,7 +1280,7 @@ typedef enum
 } hlf_T;
 
 /* The HL_FLAGS must be in the same order as the HLF_ enums!
- * When chainging this also adjust the default for 'highlight'. */
+ * When changing this also adjust the default for 'highlight'. */
 #define HL_FLAGS {'8', '@', 'd', 'e', 'h', 'i', 'l', 'm', 'M', \
 		  'n', 'r', 's', 'S', 'c', 't', 'v', 'V', 'w', 'W', \
 		  'f', 'F', 'A', 'C', 'D', 'T', '>', \
@@ -1430,7 +1448,7 @@ typedef enum
 #ifdef FEAT_MBYTE
 /* We need to call mb_stricmp() even when we aren't dealing with a multi-byte
  * encoding because mb_stricmp() takes care of all ascii and non-ascii
- * encodings, including characters with umluats in latin1, etc., while
+ * encodings, including characters with umlauts in latin1, etc., while
  * STRICMP() only handles the system locale version, which often does not
  * handle non-ascii properly. */
 
