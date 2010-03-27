@@ -16647,7 +16647,7 @@ f_synIDattr(argvars, rettv)
 		    p = highlight_has_attr(id, HL_BOLD, modec);
 		break;
 
-	case 'f':					/* fg[#] */
+	case 'f':					/* fg[#] or font */
 		p = highlight_color(id, what, modec);
 		break;
 
@@ -19123,6 +19123,14 @@ set_var(name, tv, copy)
     hashtab_T	*ht;
     char_u	*p;
 
+    ht = find_var_ht(name, &varname);
+    if (ht == NULL || *varname == NUL)
+    {
+	EMSG2(_(e_illvar), name);
+	return;
+    }
+    v = find_var_in_ht(ht, varname, TRUE);
+
     if (tv->v_type == VAR_FUNC)
     {
 	if (!(vim_strchr((char_u *)"wbs", name[0]) != NULL && name[1] == ':')
@@ -19132,7 +19140,10 @@ set_var(name, tv, copy)
 	    EMSG2(_("E704: Funcref variable name must start with a capital: %s"), name);
 	    return;
 	}
-	if (function_exists(name))
+	/* Don't allow hiding a function.  When "v" is not NULL we migth be
+	 * assigning another function to the same var, the type is checked
+	 * below. */
+	if (v == NULL && function_exists(name))
 	{
 	    EMSG2(_("E705: Variable name conflicts with existing function: %s"),
 									name);
@@ -19140,14 +19151,6 @@ set_var(name, tv, copy)
 	}
     }
 
-    ht = find_var_ht(name, &varname);
-    if (ht == NULL || *varname == NUL)
-    {
-	EMSG2(_(e_illvar), name);
-	return;
-    }
-
-    v = find_var_in_ht(ht, varname, TRUE);
     if (v != NULL)
     {
 	/* existing variable, need to clear the value */
